@@ -1,0 +1,121 @@
+<odoo>
+    <record id="view_project_cost_estimate_kanban" model="ir.ui.view">
+        <field name="name">project.cost.estimate.kanban</field>
+        <field name="model">project.cost.estimate</field>
+        <field name="arch" type="xml">
+            <kanban>
+
+
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="estimated_total_cost"/>
+                <field name="state"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+
+                        <div class="o_kanban_record" style="padding: 12px;">
+
+                            <!-- NAME -->
+                            <div style="font-size:18px; font-weight:700; margin-bottom:10px;">
+                                <t t-esc="record.name.raw_value"/>
+                            </div>
+
+                            <div class="oe_kanban_badge" style="margin-bottom:10px;">
+                                <span t-if="record.state.raw_value == 'draft'"
+                                      style="background-color:#FFC107; color:#fff; padding:3px 8px; border-radius:5px;">
+                                    Draft
+                                </span>
+                                <span t-if="record.state.raw_value == 'submitted'"
+                                      style="background-color:#17A2B8; color:#fff; padding:3px 8px; border-radius:5px;">
+                                    Submitted
+                                </span>
+                                <span t-if="record.state.raw_value == 'approved'"
+                                      style="background-color:#28A745; color:#fff; padding:3px 8px; border-radius:5px;">
+                                    Approved
+                                </span>
+                                <span t-if="record.state.raw_value == 'rejected'"
+                                      style="background-color:#DC3545; color:#fff; padding:3px 8px; border-radius:5px;">
+                                    Rejected
+                                </span>
+                            </div>
+
+                            <!-- PROJECT -->
+                            <div style="display:flex; align-items:center; margin-bottom:6px;">
+                                <i class="fa fa-folder-open" title="Project" style="margin-right:8px;"/>
+                                <strong style="margin-right:5px;">Project:</strong>
+                                <field name="project_id"/>
+                            </div>
+
+                            <!-- TOTAL COST -->
+                            <div style="display:flex; align-items:center; margin-bottom:6px;">
+                                <i class="fa fa-money" title="Total Cost" style="margin-right:8px;"/>
+                                <strong style="margin-right:5px;">Total:</strong>
+                                <field name="estimated_total_cost"/>
+                            </div>
+
+                        </div>
+
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="project_cost_estimate_list" model="ir.ui.view">
+        <field name="name">project.cost.estimate.list</field>
+        <field name="model">project.cost.estimate</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="estimated_total_cost"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="project_cost_estimate_form" model="ir.ui.view">
+        <field name="name">project.cost.estimate.form</field>
+        <field name="model">project.cost.estimate</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <header>
+                        <button name="action_submit" type="object" string="Submit" class="btn-primary" groups="project_cost_estimations_management.group_project_admin"/>
+                        <button name="action_approve" type="object" string="Approve" class="btn-success" groups="project_cost_estimations_management.group_approval_group"/>
+                        <button name="action_reject" type="object" string="Reject" class="btn-danger" groups="project_cost_estimations_management.group_approval_group"/>
+                        <field name="state" widget="statusbar"/>
+
+                    </header>
+                    <group>
+                        <field name="name" readonly="state=='submitted'"/>
+                        <field name="project_id" readonly="state=='submitted'"/>
+                        <field name="estimated_total_cost" readonly="state=='submitted'"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Breakdown">
+                            <field name="breakdown_ids" readonly="state=='submitted'">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="cost"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_project_cost_estimate" model="ir.actions.act_window">
+        <field name="name">Project Cost</field>
+        <field name="res_model">project.cost.estimate</field>
+         <field name="view_mode">kanban,list,form</field>
+    </record>
+
+</odoo>

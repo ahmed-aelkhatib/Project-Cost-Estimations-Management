@@ -1,0 +1,11 @@
+<odoo>
+    <menuitem id="project_cost_estimate_menu_root"
+              name="Project Cost Estimations Management"/>
+
+
+
+    <menuitem id="project_cost_estimate_menu"
+              name="Project Cost"
+              parent="project_cost_estimate_menu_root"
+              action="action_project_cost_estimate"/>
+</odoo>

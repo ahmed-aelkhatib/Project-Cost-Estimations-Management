@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_project_project_form_inherit_cost_estimate" model="ir.ui.view">
+        <field name="name">project.project.form.inherit.cost.estimate</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_view_cost_estimates"
+                        type="object"
+                        string="Cost Estimates"
+                        class="oe_stat_button"
+                        icon="fa-calculator"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_kanban_latest_cost" model="ir.ui.view">
+        <field name="name">project.kanban.latest.cost</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+
+            <!-- Load the field in the kanban record -->
+            <xpath expr="//kanban" position="inside">
+                <field name="latest_cost_estimate"/>
+            </xpath>
+
+
+            <xpath expr="//t[@t-name='card']//span[@class='text-truncate d-block fs-4 fw-bold']"
+                   position="after">
+
+                <div class="text-muted" t-if="record.latest_cost_estimate">
+                    <span class="fa fa-money me-2"/>
+                    Latest Cost:
+                    <t t-esc="record.latest_cost_estimate.value"/>
+                    EGP
+                </div>
+
+            </xpath>
+
+        </field>
+    </record>
+
+
+</odoo>
