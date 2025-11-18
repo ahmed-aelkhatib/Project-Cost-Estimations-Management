@@ -83,21 +83,21 @@
             <form>
                 <sheet>
                     <header>
-                        <button name="action_submit" type="object" string="Submit" class="btn-primary" groups="project_cost_estimations_management.group_project_admin"/>
-                        <button name="action_approve" type="object" string="Approve" class="btn-success" groups="project_cost_estimations_management.group_approval_group"/>
-                        <button name="action_reject" type="object" string="Reject" class="btn-danger" groups="project_cost_estimations_management.group_approval_group"/>
+                        <button name="action_submit" type="object" string="Submit" class="btn-primary" groups="project_cost_estimations_management.group_project_admin" invisible="state != 'draft'" />
+                        <button name="action_approve" type="object" string="Approve" class="btn-success" groups="project_cost_estimations_management.group_approval_group" invisible="state != 'submitted'"/>
+                        <button name="action_reject" type="object" string="Reject" class="btn-danger" groups="project_cost_estimations_management.group_approval_group" invisible="state != 'submitted'"/>
                         <field name="state" widget="statusbar"/>
 
                     </header>
                     <group>
-                        <field name="name" readonly="state=='submitted'"/>
-                        <field name="project_id" readonly="state=='submitted'"/>
-                        <field name="estimated_total_cost" readonly="state=='submitted'"/>
+                        <field name="name" readonly="state!='draft'"/>
+                        <field name="project_id" readonly="state!='draft'"/>
+                        <field name="estimated_total_cost" readonly="state!='draft'"/>
                     </group>
 
                     <notebook>
                         <page string="Breakdown">
-                            <field name="breakdown_ids" readonly="state=='submitted'">
+                            <field name="breakdown_ids" readonly="state!='draft'">
                                 <list editable="bottom">
                                     <field name="name"/>
                                     <field name="cost"/>
