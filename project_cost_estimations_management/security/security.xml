@@ -29,10 +29,10 @@
 
     <!-- Approval Group: view only submitted estimates -->
     <record id="rule_cost_estimate_approval_submitted" model="ir.rule">
-        <field name="name">Approval Group: submitted estimates only</field>
+        <field name="name">Approval Group: submitted, rejected , approved </field>
         <field name="model_id" ref="model_project_cost_estimate"/>
         <field name="groups" eval="[(4, ref('project_cost_estimations_management.group_approval_group'))]"/>
-        <field name="domain_force">[('state','=','submitted')]</field>
+        <field name="domain_force">[('state', 'in', ['submitted', 'rejected', 'approved'])]</field>
     </record>
 
 
